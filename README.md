@@ -1,1 +1,1 @@
-CSCI 132 code
+Code from CSCI 132 course.
