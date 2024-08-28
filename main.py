@@ -3,9 +3,11 @@
 # Written by Department of Computer Science of Hunter College
 # September 5, 2020
 # Usage: mathq_a_final.py
+
 #-----------------------------------------------------------------------------
 # Main program
 #-----------------------------------------------------------------------------
+
 import random # can you guess what random is for?
 import re     # what about this module?
 print("Welcome to the mathq program.")
