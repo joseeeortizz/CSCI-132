@@ -14,17 +14,19 @@ print("Welcome to the mathq program.")
 keep_asking_questions = True
 while keep_asking_questions:
     # <<Generate a random math question and its solution>>
-    first_num = random.randint(0,9)
-    second_num = random.randint(0,9)
-    operator = random.randint(0,1)
+    first_num = random.randint(0, 9)
+    second_num = random.randint(0, 9)
+    operator = random.randint(0, 1)
     if operator == 1:
         # <<create multiplication question and solution>>
         solution = first_num * second_num
         question = "%d x %d = " % (first_num, second_num)
     else:
         # <<create division question and solution>>
-        solution = first_num * second_num
-        (solution, first_num) = (first_num, solution)
+        # Ensure second_num is not zero to avoid division by zero
+        second_num = random.randint(1, 9)
+        solution = first_num
+        first_num = first_num * second_num
         question = "%d / %d = " % (first_num, second_num)
     # <<Display the question and get valid response>>
     response_is_not_valid = True
@@ -42,7 +44,7 @@ while keep_asking_questions:
         keep_asking_questions = False
     else:
         if int(response) == solution:
-            print('Correct!') # adjust indentation
+            print('Correct!')
         else:
             print("Incorrect! %s %d" % (question, solution))
 print("Exiting the mathq program.")
