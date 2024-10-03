@@ -1,0 +1,225 @@
+                                                CSCI132 Project
+                                    Overview: Processing MTA Subway Data
+The dataset for this project consists of (almost) all entrances and exits to the stations in the New York City Transit Authority. This dataset is not part of the New York City OpenData project, but is instead maintained and provided by New York State's Open NY Initiative. The terms "subway entrance" and "subway exit" respectively mean an entrance of exit to any station, whether it is above or below the ground. Henceforth the general term portal will be used to mean either an exit or an extrance. The dataset has a row for every distinct portal. Perhaps counter-intuitively, if an elevator, an escalator, and a staircase are adjacent to each other, they will each have their own distinct row and be treated as separate portals.
+This particular dataset is relatively small – only 1868 rows.
+There is so much information in this data set that many interesting queries are possible. Unfortunately, there is not enough time to create a very robus and useful program to ask the most interesting types of questions, but in this project you will get a taste of what can be done with this type of data. In particular, you must design a program that determines which entrances are part of the same stations, which stations are transfer points, and which stations and/or trains are closest to a given GPS location: solving these problems will require using data structures.
+The details of the assignment are specified in the various section below.
+
+Information About the MTA Subway Data Set
+The data set in its original form is found at NYC Transit Subway Entrance And Exit Data. This data set is cleaned up by Dr. Stewart Weiss, retaining its header line. You should not attempt to work with the original data, but you may want to inspect it online. This section describes the data set after his revisions to it.
+A file in csv format, in case you are not familiar with it, is a comma-separated-values file. A comma-separated-values file is a plain text file in which each line represents a single record, and within the line, commas separate the individual fields of the record. Do note that fields can also contain embedded commas (they are within quoted strings, e.g., "Brooklyn, New York" is a single field.) Spreadsheet applications let you import csv files to view their contents by rows and columns. The data set that is downloaded will have as its first row, the labels of its columns, i.e. the header.
+Each row has 32 separate columns, not all of which have data in them. The information that is included includes items like the entrance's spatial location in GPS coordinates, the subway lines that are accessible from that entrance, the division (e.g., BMT, IRT, IND) the line (e.g., 4th Avenue) the station name, and the cross streets of the entrance (exit) and which compass direction it is at that intersection (e.g. Lexington Avenue and 63rd Street NW corner). It also has the access type (stairs, elevator, etc.), whether there are vending machines, and so on. The table below lists the fields in the order in which they occur in the csv file:
+Column label	Description of column
+Division	IND, IRT, BMT
+Line	Name for route, such as "Sixth Avenue", or "Lexington Avenue"
+Station Name	Official name of the station on that line
+Station Latitude	Latitude and longitude of station on that line
+Station Longitude	portal accesses
+Route1	Each of the route fields has a single train designator such as A, B, C, ... or 1, 2, 3, ... including the two-letter designators, FS and GS.
+The routes are the trains that are accessed at that portal.
+Route2
+Route3
+Route4
+Route5
+Route6
+Route7
+Route8
+Route9
+Route10
+Route11
+Entrance Type	Stair, elevator, escalator, etc.
+Entry	YES or NO
+Exit Only	YES or empty string
+Vending	YES or NO
+Staffing	FULL or NONE or PART or "Spc Ev"
+Staff Hours	string describing hours and days at which it is open
+ADA	TRUE or FALSE
+ADA Notes	string providing more details about ADA compliance
+Free Crossover	TRUE or FALSE (whether one can switch directions on lines)
+North South Street	Name of north-south street
+East West Street	Name of east-west street
+Corner	which corner: NW, SW, NE, SE
+Entrance Latitude	Latitude of the portal
+Entrance Longitude	Longitude of the portal
+Station Location	The station's location in the form (latitude, longitude)
+Entrance Location	The portal's location in the form (latitude, longitude)
+The latitude and longitude values are what GPS systems use for location coordinates. 
+This data is available on our server in the data subdirectory of the cs132 and cs132_td directories in a modified from. Each line in the dataset contains several columns. Some of these columns may be empty. Two commas characters with no intervening characters between them represent an empty column, and the commas separating each entry determine the columns. This means that a valid line contains 31 commas separating the entries (even if the entries are empty), and maybe more, if the fields contain embedded commas. While there should not be invalid lines in the file, if any are found, the program should handle them by ignoring them.
+A line in the CSV subway file might look like this: 
+IRT,Lexington,68th St-Hunter College,40.768141,-73.96387,6,,,,,,,,,,,Stair,YES,,YES,FULL,,FALSE,,TRUE,Lexington Ave,68th St,SW,40.767817,-73.964355,"(40.768141, -73.96387)","(40.767817, -73.964355)"
+or like this:
+BMT,4 Avenue,Atlantic Av-Barclays Ctr,40.683666,-73.97881,B,Q,D,N,R,2,3,4,5,,,Elevator,YES,,YES,FULL,,TRUE,,TRUE,4th Ave,Pacific St,NE,40.683805,-73.978487,"(40.683666, -73.97881)","(40.683805, -73.978487)"
+Subway Portals, Subway Stations, and Routes
+Anyone who uses the New York City subway system knows that there is some ambiguity in the meaning of the term "subway station". For example, 51st Street station of the 6 line is connected to the Lexington Avenue station of the E-M line. Is this one station or two? In the data set, they are separate stations.
+There is a natural equivalence relation on subway stations: two stations are equivalent if there is a free transfer between them without having to exit and re-enter (as is the case for the F-train at 63rd Street and the 4-5-6 at 59th Street). This is reflexive, symmetric (to the best of Dr. Weiss' knowledge), and transitive.
+One objective of your program is to form the equivalence classes of subway stations from the data set. The set of all stations in an equivalence calss based on the preceding relation will be called a disjoint station set or a station set for short when the meaning is clear.
+Your program should use a heuristic to decide whether two stations are equivalent: it should consider them equivalent if they have the exact same set of routes and they are "sufficiently close" to each other geographically.
+There is no explicit column in the dataset that tells us whether two stations are connected. Therefore, we must use a heuristic rule to determine this. The rule we shall use is the following definition:
+Definition: Two subway stations S1 and S2 are connected if either 
+	•	the set of routes for each is identical, and
+	•	the distance between them is at most 0.28 kilometers.
+or there is a third station S0 such that S1 and S2 is connected to S0.
+The distance constraint is based on the lengths of the trains and the historical minimum distance between non-equivalent stations. With this definition, the dataset can be used to construct the collection of (disjoint) station sets.	Portals and Connectivity
+Given any pair of subway portals, either they are part of the same subway station or they are not. When two portals are part of the same station, we say they are connected. Otherwise they are disjoint. A moment's thought should convince you that connectivity is symmetric, reflexive, and transitive, and hence, an equivalent relation.
+The data set provides the name of the station to which a portal belongs. It is the third field of the row. If two portals have the same third field, then they are part of the same station and thus equivalent. But the equivalence class is larger than this, because if stations are equivalent by the Definition, then all portals for each of the equivalent stations are equivalent. For example, if entrances A and B are part of station X, and entrances C and D are part of station Y, and we discover that X and Y are equivalent by the Definition, then A, B, C, and D are all equivalent – they all give access to the exact same set of routes in the small geographic vicinity of the two stations.
+This shows that the set of all properties is a collection of disjoint sets, and this collection should be represented by a set of data structures or classes in your program.
+Portal Names
+Entrances and exits are not given unique names in the data set for each station, but you can define a general name and a unique name for each portal using specific criteria: the concatenation of the north-south-street field, east-west street field, the corner field, and the GPS coordinates of the portal.
+Example: The row containg the fields
+
+North South Street,East West Street,Corner, ... ,Entrance Location
+Madison Ave,       42nd St,         NW,     ... ,"(40.753087, -73.979537)"
+will be given the general portal location name "Madison Ave,42nd St, NW"
+and its GPS coordinates, "(40.753087, -73.979537)" as the unique portal name.
+Being able to use the GPS coordinates to each portal means that we can use that information as a key that represents it uniquely.
+Routes and Route Sets
+A route consists of the set of all stations that service that route. One station may be part of many routes, and hence routes do not partition the collection of stations into disjoint sets. Although most routes define a sequence of stations, determined by the order in which a train is running on that route visits each station, some do not because they branch. Therefore, in this project, do not attempt to order the stations for a given route, but should store the stations that are part of a route in a container that represents that route. A SubwayRoute encapsulates the set of stations that are part of that route, in no particular order, as well as the operations that a route should support. 
+Note that the dataset uses the term "line" as a portion of a route. For example, the "R" is a route that starts in Brooklyn on the 4th Avenue line, then runs on the Broadway line in Mahattan, then runs on the Queens Boulevard line in Queens. Do not confuse lines with routes.
+A route set is a set of zero or more routes. At any given subway station, there is a set of routes that it accesses. Therefore, there is a route set associated with each station and hence each portal. This data set (which is not as current as it should be) only has about 25 distinct routes. Therefore a set of routes can be represented easily by a number, with each number representing a distinct route.
+
+Instructions and Detailed Requirements
+The Python program or bash shell script must be run with only one command line argument, which is the name of the csv file containing the subway data. For example, such a Python program should be named subway.py. Since the subway data is stored in a file named nyc_subway_stations.csv, then proper usage of this program would be
+subway.py nyc_subway_stations.csv
+which will cause the program to read and store the rows of data from  nyc_subway_stations.csv, and for each line in the file, it will will process each row into a data structure, i.e. some preliminary processing. It should not store all of the columns of the rows, since the program will be required process a series of queries about specific data, read from that file.  
+* Your program should also define a dictionary named gps_coordinates that has the two members, latitude and longitude. 
+* Your program should also define a data structure or class named portals, and other to refer to SubwayRoutes. The portals data structure or class should use a reference to gps_coordinates rather than storing the latitude and longitude as individual members. In addition, as each item in this portals data structure is added, the route set for that portal should be computed and stored, and the station that a portal is part of should be added to the SubwayRoutes data structure/class of all routes that it services.
+Additional Error Checking
+ If the program is called without the command-line argument, it is an error and the program should report it and exit immediately.
+ If the file on the command line cannot be opened, the program should display a specific message related to the error and then exit.
+ Extra Credit (30 points): The program does not have to check that the data file is in the correct format.
+ If it does check anyway, it should warn the user of the possibility of corruption and exit.
+After all of the rows have been processed, the program should proceed to use and access whatever necessary data structures it requires to perform each part of the instructions below. Do note that when the program command is not used correctly, the program should report the appropriate user error and continue asking for a program command, such as when no arguments are given, or an incorrect number of arguments is given. 
+Part 1: A working program
+Your program should read all of the lines in the file, creating a portal record for each line and storing that into an data structure or class named portals. Once it has done that, it must enter an interactive loop that prompts the user for a response. 
+The commands to which it will respond allow the user to:
+	•	get a list of names of all subway stations,
+	•	get a list of all subway stations that service a given route,
+	•	get a list of routes that can be accessed at a given portal,
+	•	get a list of information of all portals or routes within a defined distance from some location,
+	•	get a help page about each command, and
+	•	quit the application
+The program might begin like this after they execute the program:
+$ ./subway.py nyc_subway_stations.csv
+Welcome to the subway program.
+To begin, try typing 'help' for the list of valid commands.
+ 
+Enter a command:
+
+The user is allowed to enter one of the following commands:
+	1	help 
+	2	liststations
+	3	listroutestations (with its input arguments)
+	4	listroutes (with its input arguments)
+	5	liststationportals (with its input arguments)
+	6	nearest (with some input arguments)
+	7	quit
+Notice that the program should not exit immediately after any of the program commands, other than 'quit', are used. The program should continuously prompt for input from the user, until they run the quit command.
+Part 2: the help command
+The help command should tell the end-user all details about every valid program command, including itself, of the program, whenever they enter this command.
+The user should also be prompted to enter this command whenever they type in an invalid command.
+Part 3: the liststations command
+If the user enters the command 'liststations', the program displays the station names of all subway stations in the entire subway system.
+The list of station names should be sorted alphabetically.
+Part 4: the listroutestations command
+If the user enters the 'listroutestations' command with at least the one required argument,
+listroutestations <route_identifier>
+the program should list the station names of all subway stations that service the given route. For <route_identifier>, the user enters a route.
+The route identifier is case insensitve – either upper or lower case should identify a route, e.g. "A" and "a" specify the A route.
+Part 5: the listroutes command
+If the user enters the 'listroutes' command with at least the one required argument,
+listroutes <portal_name>
+the program should list the routes that can be accessed at this portal. Routes should be printed in the form "route, route, ..., route" where route is a route id like A, B, 7, FS.
+For <portal_name>, the user can enter a given portal either as a general name referring to the cross streets and corner in either form of
+north-south street, east-west street, and corner, the three arguments separated by commas, e.g. the example Madison Ave,  42nd St,  NW,
+or
+the GPS coordinates of a specific portal, e.g. the example (40.753087, -73.979537)
+Part 6: the liststationportals command
+If the user enters the 'liststationportals' command with at least the one required argument,
+liststationportals <station_name>
+the program should list the unique names of all subway portals for the given station and what the type of entrance is for each portal. The station name is case sensitive.
+Part 7: the nearest command
+If the user enters the 'nearest' command with its two required arguments,
+nearest <latitude> <longitude>
+where <latitude> and <longitude> are fixed-point decimal numbers, the program should list the following information:
+	•	both the general portal location name (i.e., the north-south street, east-west street, and corner) and the specific portal name (the GPS coordinates) of the portal that is closest to the GPS point (latitude, longitude).
+	•	The two numbers should be checked for validity – no absolute value greater than 180 degrees is allowed.
+	•	In the very unlikely event that two portals are exactly the same distance from the point, either one can be listed.
+	•	the route_identifiers of all subway routes that are closest to the point (latitude, longitude). 
+	•	There may be more than one because two or more routes might be at a station that is nearest to the point.
+The Haversine formula [1] can be used to compute the approximate distance between two points when they are each defined by their decimal latitude and longitude in degrees. The distance is approximate because
+	1	the earth is not really a sphere, and
+	2	numerical round-off errors occur.
+Nonetheless, for points that are no more than ten kilometers apart, the formula is accurate enough. Given the following notation
+	•	d : the distance between the two points (along a great circle of the sphere),
+	•	r : the radius of the sphere,
+	•	, : latitude of point 1 and latitude of point 2, in radians,
+	•	λ1, λ2: longitude of point 1 and longitude of point 2, in radians
+the formula for this distance d is
+
+For example, for the closest subway portal and the routes of the GPS coordinates (40.684, -73.977) is below:
+$ ./subway.py nyc_subway_stations.csv
+Welcome to the subway program.
+To begin, try typing 'help' for the list of valid commands.
+
+Enter a command: nearest 40.684 -73.977
+Closest portal:
+    General portal location: Ashland Pl & Hanson Pl at SE corner
+    Unique portal: (40.684359, -73.977666)
+
+Closet routes: B,D,N,Q,R,2,3,4,5
+
+Enter a command:
+
+The program should only return output for this command when nearest is given valid and required arguments. The program should also inform to the user to use the 'help' command to learn more details about using nearest when any of the required arguments are not provided to it in the correct format. It should then redisplay the prompt after the user's response.
+Part 8: the quit command
+If the user enters "quit" anytime, then the program should exit.
+Although it is not necessary, the program could output a departure message before the program terminates
+$ ./subway.py nyc_subway_stations.csv
+Welcome to the subway program.
+To begin, try typing 'help' for the list of valid commands.
+ 
+Enter a command:
+$ ./subway.py nyc_subway_stations.csv
+Welcome to the subway program.
+To begin, try typing 'help' for the list of valid commands.
+
+Enter a command: list
+Invalid command. Type 'help' for the list of valid commands. 
+Enter a command:
+$ ./subway.py nyc_subway_stations.csv
+Welcome to the subway program.
+To begin, try typing 'help' for the list of valid commands.
+
+Enter a command: nearest 40.684 -73.977
+Closest portal:
+    General portal location: Ashland Pl & Hanson Pl at SE corner
+    Unique portal: (40.684359, -73.977666)
+
+Closet routes: B,D,N,Q,R,2,3,4,5
+
+Enter a command:
+
+Program Considerations
+Your program should read the csv file and store each row into an element of a data structure. It should not store all of the columns of the rows. As it reads the rows and stores them, it should do some preliminary processing. After the data is stored in memory, the program should process various queries about that dataset. The output should be what is described above and nothing else.
+The program will need to use data structures and use functions to complete its tasks. The main program should be very simple – after accepting and validating the argument of the script, it should prompt the user and get the user's commands within a loop to proceed to the main program.
+* It should write an error message if the user does not enter a valid action.
+* When the user enters one of the valid actions, it should call a function to compute whatever needs to be computed.
+* The functions should be passed whatever arguments they need in order to perform their tasks.
+The program can treat all names of stations and portals case sensitively. However, it should treat any sequence of space characters as a single space character. Thus, the following strings refer to the same name:
+Nassau St & Frankfort St at SE corner
+Nassau St   &   Frankfort   St at SE corner
+This is true of names entered as arguments to commands as well. This makes it easier for the user of the program, but harder for you, the programmer.
+It is considerable that you use functions such as the following ones, but it is only a suggestion:
+* A function named portalNames to produce the general portal location name and the specific portal location names for the data structures/classes when processing the input file, all before reporting the information asked by request of a specific program command. As a reminder, the information asked throughout the program varies according to the corresponding command.
+* A function named routeSets, to check for matching sets of routes that are identical according to the Definition, and the explanations on connectivity and route sets,
+* the function named haversine, to compute the distance between two points defined by decimal latitude and longitude.
+The 'quit' command should be the only way for the user to exit out of the program and enter back to the command line.
+Testing
+All programs must be thoroughly tested before they are released to users. It is suggested that you create small subsets of the data to test your program. To do this you can use various filters. Which ones and how to use them, we leave to you to figure out. The full sample data set provided on the Linux Lab:
+/data/biocs/b/student.accounts/cs132_td/data/open_datasets/nyc_street_trees.csv
+and
+/data/biocs/b/student.accounts/cs132/data/open_datasets/nyc_street_trees.csv
+Do not copy this entire directory into your home directory on the Linux Lab. It is wasteful and may use up your valuable disk space allocation. Instead, make small subsets of it in your home directory. You can of course secure-copy it onto your personal computing device. Try creating some sample input files of a small size and manually figure out what the outputs should be. Run your program and make sure that your output matches the one you manually computed.
+
+This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
+[1] https: //en.wikipedia.org/wiki/Haversine_formula
