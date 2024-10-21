@@ -1,9 +1,10 @@
 # Name:  Jose Ortiz
 # Email: jose.ortiz60@myhunter.cuny.edu
-# Date:  October 24, 2023
+# Date:  October 21, 2024
 # Course: CSCI-132
 # CSCI-132 Project.
 # Description: This program will read a CSV file containing subway data and allow users to query the data.
+# The program will provide information about subway stations, routes, and portals.
 
 import csv
 import math
