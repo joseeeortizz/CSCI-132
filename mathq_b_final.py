@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # mathq_b_final.py -- an interactive math program
-# Written by Department of Computer Science of Hunter College
-# September 5, 2020
+# Written by Jose Ortiz
+# October 23, 2024
 # Usage: mathq_b_final.py
 
 import random

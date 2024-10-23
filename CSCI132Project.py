@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
-# mathq_b_final.py -- an interactive math program
-# Written by Department of Computer Science of Hunter College
-# September 5, 2020
-# Usage: mathq_b_final.py
+# Author: Jose Ortiz
+# Course: CSCI-132
+# CSCI-132 Project.
+# Description: This program will read a CSV file containing subway data and allow users to query the data.
+# The program will provide information about subway stations, routes, and portals.
+
 
 import csv
 import math
