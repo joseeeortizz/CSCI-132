@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# mathq_b_final.py -- an interactive math program
+# Written by Department of Computer Science of Hunter College
+# September 5, 2020
+# Usage: mathq_b_final.py
+
 import csv
 import math
 from collections import defaultdict, namedtuple
@@ -43,35 +49,44 @@ def haversine(lat1, lon1, lat2, lon2):
 
 def list_stations(stations, output_file):
     """Lists all station names alphabetically."""
-    output_file.write("Subway Stations:\n")
+    output = "Subway Stations:\n"
     for station in sorted(stations, key=lambda x: x.station_name):
-        output_file.write(station.station_name + "\n")
+        output += station.station_name + "\n"
+    print(output)
+    output_file.write(output)
 
 
 def list_route_stations(stations, route_identifier, output_file):
     """Lists stations served by a specific route."""
-    output_file.write(f"Stations on Route {route_identifier}:\n")
+    output = f"Stations on Route {route_identifier}:\n"
     for station in stations:
         if route_identifier in station.route_sets:
-            output_file.write(station.station_name + "\n")
+            output += station.station_name + "\n"
+    print(output)
+    output_file.write(output)
 
 
 def list_routes(portals, portal_name, output_file):
     """Lists routes accessible at a specific portal."""
+    output = ""
     for portal in portals:
         if portal.station_name == portal_name:  # Ensure comparison is correct
-            output_file.write(f"Routes at {portal.station_name}: {', '.join(portal.route_sets)}\n")
+            output = f"Routes at {portal.station_name}: {', '.join(portal.route_sets)}\n"
             break
     else:
-        output_file.write(f"No portal found for {portal_name}\n")
+        output = f"No portal found for {portal_name}\n"
+    print(output)
+    output_file.write(output)
 
 
 def list_station_portals(portals, station_name, output_file):
     """Lists all portals for a given station and their entrance types."""
-    output_file.write(f"Portals for Station {station_name}:\n")
+    output = f"Portals for Station {station_name}:\n"
     for portal in portals:
         if portal.station_name == station_name:
-            output_file.write(f"  {portal.station_name} ({portal.route_sets})\n")
+            output += f"  {portal.station_name} ({portal.route_sets})\n"
+    print(output)
+    output_file.write(output)
 
 
 def nearest_portal(portals, latitude, longitude, output_file):
@@ -83,8 +98,10 @@ def nearest_portal(portals, latitude, longitude, output_file):
         if distance < closest_distance:
             closest_distance = distance
             closest_portal = portal
-    output_file.write(f"Closest portal: {closest_portal.station_name} ({closest_portal.gps_coordinates})\n")
-    output_file.write(f"Closest routes: {', '.join(closest_portal.route_sets)}\n")
+    output = (f"Closest portal: {closest_portal.station_name} ({closest_portal.gps_coordinates})\n"
+              f"Closest routes: {', '.join(closest_portal.route_sets)}\n")
+    print(output)
+    output_file.write(output)
 
 
 def main():
@@ -142,13 +159,14 @@ def main():
                          "  nearest <latitude> <longitude>: Find the nearest portal\n"
                          "  help: Display this help message\n"
                          "  quit: Exit the program")
-            output_file.write(help_text + "\n")
             print(help_text)
+            output_file.write(help_text + "\n")
         elif command == "quit":
             break
         else:
-            output_file.write("Invalid command. Type 'help' for the list of valid commands.\n")
-            print("Invalid command. Type 'help' for the list of valid commands.")
+            error_message = "Invalid command. Type 'help' for the list of valid commands.\n"
+            print(error_message)
+            output_file.write(error_message)
 
     # Close the output file when done
     output_file.close()
