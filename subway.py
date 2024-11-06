@@ -1,8 +1,11 @@
-# Author: Jose Ortiz
-# Course: CSCI-132
-# CSCI-132 Project.
-# Description: This program will read a CSV file containing subway data and allow users to query the data.
-# The program will provide information about subway stations, routes, and portals.
+#!/usr/bin/env python3
+# Assignment4.py
+# Usage : subway.py - CSCI-132 Project.
+# Author : Jose Ortiz
+# Created on : November 5, 2024
+# Description : This program will read a CSV file containing subway data and allow users to query the data. The program will provide information about subway stations, routes, and portals.
+#
+#*************************************************************
 
 
 import csv
