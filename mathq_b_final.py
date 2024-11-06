@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 # mathq_b_final.py -- an interactive math program
-# Written by Jose Ortiz
-# October 23, 2024
-# Usage: mathq_b_final.py
+# Usage : nested_if.py
+# Author : Jose Ortiz
+# Created on : November 6, 2024
+# Description : mathq_b_final.py
+#
+#*************************************************************
 
 import random
 import re

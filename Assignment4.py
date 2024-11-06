@@ -1,8 +1,12 @@
-hi i am testing nano.
-
+# hi i am testing nano.
 #!/bin/bash
-
-# jose ortiz
+# Assignment4.py
+# Usage : nested_if.py
+# Author : Jose Ortiz
+# Created on : November 5, 2024
+# Description : Assignment4.py
+#
+#*************************************************************
 
 
 # Function to display the usage message
