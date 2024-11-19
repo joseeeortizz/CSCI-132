@@ -246,7 +246,7 @@ def check_file_lines(csv_filename):
                 return False
         return True
 def main():
-    data_file = '/Users/tbogi/Desktop/nyc_subway_stations.csv'
+    data_file = '/Users/tbogi/Desktop/nyc_subway_stations3.csv'
 
     # Open the output file for writing
     output_file = open('/Users/tbogi/Desktop/subway_output.txt', 'w')
