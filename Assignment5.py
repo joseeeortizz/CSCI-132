@@ -2,11 +2,9 @@
 # Usage : Assignment5
 # Author : Jose Ortiz
 # Created on : November 13, 2024
-# Description : Assignment4.sh
+# Description : Assignment5.sh
 #
 #*************************************************************
-
-#!/bin/bash
 
 # Check if a single argument is provided
 if [ $# -ne 1 ]; then
