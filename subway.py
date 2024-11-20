@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # subway.py -- an interactive subway program
 # Usage : subway.py - CSCI-132 Project.
-# Author : Jose Ortiz
+# Author : Jose Ortiz & Thodoros Bogiatzidis
 # Created on : November 5, 2024.
 # Description : This program will read a CSV file containing subway data and allow users to query the data. The program will provide information about subway stations, routes, and portals.
 #
@@ -112,14 +112,14 @@ def nearest_portal(portals, latitude, longitude, output_file):
 
   
 def check_line(line):
-    #This function check every value in the line (list) passed as arguement to see
+    #This function check every value in the line (list) passed as argument to see
     #if it matches the regex pattern specified for that line
 
-    #some of the regex patterns maybe have to be loosen up because they may
+    #some of the regex patterns maybe have to be loosened up because they may
     #not match future values if someone edits the file
 
     #For the given file it works fine and given that the specified
-    #format of the file is going to be the same is gonna be alright
+    #format of the file is going to be the same is going to be alright
     
     #The file is inconsistent at some points as some values maybe
     #have the same meaning with others
@@ -225,7 +225,7 @@ def check_line(line):
     
     
 def check_file_lines(csv_filename):
-    #This function makes some inital checks to the file, checking at first that the header is right
+    #This function makes some initial checks to the file, checking at first that the header is right
     #and then checks if each line has the right length and passes the line to check_line function to
     #see if each value of the line matches the regex
 
