@@ -1,8 +1,8 @@
 #!/bin/bash
 # Usage : Assignment7
 # Author : Jose Ortiz
-# Created on : November 13, 2024
-# Description : Assignment4.sh
+# Created on : November 20, 2024
+# Description : Assignment7.sh
 #
 #*************************************************************
 #!/bin/bash
