@@ -1,8 +1,8 @@
 # Assignment 7
 # Usage : python3 atomcoordinates.py
 # Author : Jose Ortiz
-# Created on : November 22, 2024.
-# Description :
+# Created on : November 25, 2024.
+# Description : This program reads a PDB file and prints the atom serial number, X, Y, and Z coordinates of each atom in the file.
 #
 #*************************************************************
 

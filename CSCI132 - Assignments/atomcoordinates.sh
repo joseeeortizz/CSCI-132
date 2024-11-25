@@ -1,8 +1,12 @@
 #!/bin/bash
 # Usage : Assignment 7
 # Author : Jose Ortiz
-# Created on : November 20, 2024
-# Description : atomcoordinates.sh
+# Created on : November 25, 2024
+# Description : atomcoordinates.sh is a bash script that reads a PDB file and extracts the atom serial number, X, Y, and Z coordinates of each atom in the file.
+# The script uses awk to process the PDB file and extract the required information. The script takes a single argument, which is the path to the PDB file.
+# The script checks if the argument is provided and if it is a readable file. If the argument is not provided or the file is not readable, the script displays an error message and exits. If the argument is provided and the file is readable, the script processes the PDB file using awk and extracts the atom serial number, X, Y, and Z coordinates of each atom in the file.
+# The extracted information is displayed in a tabular format with the following columns: Atom serial number, X coordinates, Y coordinates, and Z coordinates. The script uses printf to format the output in a tabular format.
+# The bash script is tested with different PDB files to ensure that it works correctly and displays the required information.
 #
 #*************************************************************
 
@@ -41,3 +45,5 @@ awk '
         printf "%-25s%-20s%-20s%-20s\n", serial_number, x_coord, y_coord, z_coord
     }
 ' "$1"
+
+#*************************************************************
