@@ -15,18 +15,15 @@ def usage():
     print("Usage: python3 atomcoordinates.py <PDB file>")
     sys.exit(1)
 
-# Check the number of arguments
 if len(sys.argv) != 2:
     print("Error: Expected one argument.")
     usage()
 
-# Check if the file exists and is readable
 file_path = sys.argv[1]
 if not os.path.isfile(file_path) or not os.access(file_path, os.R_OK):
     print(f"Error: '{file_path}' is not a readable file.")
     usage()
 
-# Process the PDB file
 try:
     print(f"{'Atom serial number:':<25}{'X coordinates:':<20}{'Y coordinates:':<20}{'Z coordinates:':<20}")
     with open(file_path, 'r') as file:
