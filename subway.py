@@ -337,7 +337,7 @@ def main():
                          "  quit: Exit the program")
             print(help_text)
             output_file.write(help_text + "\n")
-        elif command == "quit":
+        elif command == "quit" or command == "q":
             break
         else:
             error_message = "Invalid command. Type 'help' for the list of valid commands.\n"
