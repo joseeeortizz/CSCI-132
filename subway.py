@@ -257,8 +257,12 @@ def check_file_lines(csv_filename):
 
 
 def getUsername():
-    username = subprocess.run("echo %USERNAME%", capture_output=True, text=True, shell=True).stdout.split("\n")[0]
-    return username
+    try:
+        username = subprocess.run("echo %USERNAME%", capture_output=True, text=True, shell=True).stdout.split("\n")[0]
+        return username
+    except:
+        username = ""
+
 
 
 def main():
