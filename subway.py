@@ -14,6 +14,7 @@ from collections import defaultdict, namedtuple
 from geopy.distance import great_circle
 import re
 import subprocess
+import os
 
 # Define data structures
 Portal = namedtuple("Portal", ["station_name", "gps_coordinates", "route_sets"])
@@ -272,9 +273,9 @@ def main():
             # Open the output file for writing
             output_file = open('C:/Users/' + user + '/OneDrive/Desktop/subway_output.txt', 'w')
         except:
-            data_file = '~/Desktop/nyc_subway_stations.csv'
+            data_file = os.path.join(os.path.join(os.pash.expanduser('~')),'Desktop/nyc_subway_stations.csv')
             # Open the output file for writing
-            output_file = open('~/Desktop/subway_output.txt', 'w')
+            output_file = open(os.path.join(os.path.join(os.pash.expanduser('~')),'Desktop/subway_output.txt'), 'w')
 
     portals = []
     station_list = []
