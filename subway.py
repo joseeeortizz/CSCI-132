@@ -257,10 +257,19 @@ def getUsername():
     return username
 def main(): 
     user = getUsername()
-    data_file = 'C:/Users/'+ user +'/Desktop/nyc_subway_stations.csv'
-
-    # Open the output file for writing
-    output_file = open('C:/Users/'+ user +'/Desktop/subway_output.txt', 'w')
+    try:
+        data_file = 'C:/Users/'+ user +'/Desktop/nyc_subway_stations.csv'
+        # Open the output file for writing
+        output_file = open('C:/Users/'+ user +'/Desktop/subway_output.txt', 'w')
+    except:
+        try:
+            data_file = 'C:/Users/'+ user +'/OneDrive/Desktop/nyc_subway_stations.csv'
+            # Open the output file for writing
+            output_file = open('C:/Users/'+ user +'/OneDrive/Desktop/subway_output.txt', 'w')
+        except:
+            data_file = '~/Desktop/nyc_subway_stations.csv'
+            # Open the output file for writing
+            output_file = open('~/Desktop/subway_output.txt', 'w')
 
     portals = []
     station_list = []
