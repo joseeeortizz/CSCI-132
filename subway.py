@@ -125,12 +125,12 @@ def check_line(line):
     #have the same meaning with others
     #example: W, West
 
-    text_regex = "^[a-zA-Z0-9\-\s\:\s\&\(\)\'\.]+$"
-    text_regex_n = "^[a-zA-Z0-9\-\s\:\s\&\(\)\'\.]+$|^$"
-    float_regex = "^\-?[0-9]+(\.?[0-9]+)?$"
-    route_regex = "[a-zA-Z0-9]|^$"
-    coordinates_regex = "^\(\-?[0-9]+(\.?[0-9]+)?\,\s\-?[0-9]+(\.?[0-9]+)?\)$"
-
+    text_regex = r"^[a-zA-Z0-9\- :&()'.]+$"
+    text_regex_n = r"^[a-zA-Z0-9\- :&()'.]+$|^$"
+    float_regex = r"^\-?[0-9]+(\.?[0-9]+)?$"
+    route_regex = r"[a-zA-Z0-9]|^$"
+    coordinates_regex = r"^\(\-?[0-9]+(\.?[0-9]+)?,\s\-?[0-9]+(\.?[0-9]+)?\)$"
+    
     if not line[0] in ["BMT", "IND", "IRT"]:  #Division
         print("Value: " + line[0] + " in line 0 is invalid")
         return False
