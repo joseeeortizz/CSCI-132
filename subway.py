@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# subway_original.py --- an interactive NYC subway program.
+# subway.py --- an interactive NYC subway program.
 # Usage : subway_original.py - CSCI-132 Project.
 # Author : Jose Ortiz & Theodoros Bogiatzis
 # Created on : November 5, 2024.
