@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # subway.py --- an interactive NYC subway program.
-# Usage : subway.py - CSCI-132 Project.
+# Usage : subway_original.py - CSCI-132 Project.
 # Author : Jose Ortiz & Theodoros Bogiatzis
 # Created on : November 5, 2024.
 # Description : This program will read a CSV file containing subway data and allow users to query the data. The program will provide information about subway stations, routes, and portals.
 #
-#*************************************************************
+# *************************************************************
 
 
 import csv
@@ -112,18 +112,18 @@ def nearest_portal(portals, latitude, longitude, output_file):
 
 
 def check_line(line):
-    #This function check every value in the line (list) passed as argument to see
-    #if it matches the regex pattern specified for that line
+    # This function check every value in the line (list) passed as argument to see
+    # if it matches the regex pattern specified for that line
 
-    #some of the regex patterns maybe have to be loosened up because they may
-    #not match future values if someone edits the file
+    # some of the regex patterns maybe have to be loosened up because they may
+    # not match future values if someone edits the file
 
-    #For the given file it works fine and given that the specified
-    #format of the file is going to be the same is going to be alright
+    # For the given file it works fine and given that the specified
+    # format of the file is going to be the same is going to be alright
 
-    #The file is inconsistent at some points as some values maybe
-    #have the same meaning with others
-    #example: W, West
+    # The file is inconsistent at some points as some values maybe
+    # have the same meaning with others
+    # example: W, West
 
     text_regex = r"^[a-zA-Z0-9\- :&()'.]+$"
     text_regex_n = r"^[a-zA-Z0-9\- :&()'.]+$|^$"
@@ -131,109 +131,109 @@ def check_line(line):
     route_regex = r"[a-zA-Z0-9]|^$"
     coordinates_regex = r"^\(\-?[0-9]+(\.?[0-9]+)?,\s\-?[0-9]+(\.?[0-9]+)?\)$"
 
-    if not line[0] in ["BMT", "IND", "IRT"]:  #Division
+    if not line[0] in ["BMT", "IND", "IRT"]:  # Division
         print("Value: " + line[0] + " in line 0 is invalid")
         return False
-    if not re.match(text_regex, line[1]):  #Line
+    if not re.match(text_regex, line[1]):  # Line
         print("Value: " + line[1] + " in line 1 is invalid")
         return False
-    if not re.match(text_regex, line[2]):  #Station Name
+    if not re.match(text_regex, line[2]):  # Station Name
         print("Value: " + line[2] + " in line 2 is invalid")
         return False
-    if not re.match(float_regex, line[3]):  #Station Latitude
+    if not re.match(float_regex, line[3]):  # Station Latitude
         print("Value: " + line[3] + " in line 3 is invalid")
         return False
-    if not re.match(float_regex, line[4]):  #Station Longtitude
+    if not re.match(float_regex, line[4]):  # Station Longtitude
         print("Value: " + line[4] + " in line 4 is invalid")
         return False
-    if not re.match(route_regex, line[5]):  #Route 1
+    if not re.match(route_regex, line[5]):  # Route 1
         print("Value: " + line[5] + " in line 5 is invalid")
         return False
-    if not re.match(route_regex, line[6]):  #Route 2
+    if not re.match(route_regex, line[6]):  # Route 2
         print("Value: " + line[6] + " in line 6 is invalid")
         return False
-    if not re.match(route_regex, line[7]):  #Route 3
+    if not re.match(route_regex, line[7]):  # Route 3
         print("Value: " + line[7] + " in line 7 is invalid")
         return False
-    if not re.match(route_regex, line[8]):  #Route 4
+    if not re.match(route_regex, line[8]):  # Route 4
         print("Value: " + line[8] + " in line 8 is invalid")
         return False
-    if not re.match(route_regex, line[9]):  #Route
+    if not re.match(route_regex, line[9]):  # Route
         print("Value: " + line[9] + " in line 9 is invalid")
         return False
-    if not re.match(route_regex, line[10]):  #Route 6
+    if not re.match(route_regex, line[10]):  # Route 6
         print("Value: " + line[10] + " in line 10 is invalid")
         return False
-    if not re.match(route_regex, line[11]):  #Route 7
+    if not re.match(route_regex, line[11]):  # Route 7
         print("Value: " + line[11] + " in line 11 is invalid")
         return False
-    if not re.match(route_regex, line[12]):  #Route 8
+    if not re.match(route_regex, line[12]):  # Route 8
         print("Value: " + line[12] + " in line 12 is invalid")
         return False
-    if not re.match(route_regex, line[13]):  #Route 9
+    if not re.match(route_regex, line[13]):  # Route 9
         print("Value: " + line[13] + " in line 13 is invalid")
         return False
-    if not re.match(route_regex, line[14]):  #Route 10
+    if not re.match(route_regex, line[14]):  # Route 10
         print("Value: " + line[14] + " in line 14 is invalid")
         return False
-    if not re.match(route_regex, line[15]):  #Route 11
+    if not re.match(route_regex, line[15]):  # Route 11
         print("Value: " + line[15] + " in line 15 is invalid")
         return False
-    if not line[16] in ["Stair", "Escalator", "Elevator", "Easement", "Door", "Ramp", "Walkway"]:  #Entrance Type
+    if not line[16] in ["Stair", "Escalator", "Elevator", "Easement", "Door", "Ramp", "Walkway"]:  # Entrance Type
         print("Value: " + line[16] + " in line 16 is invalid")
         return False
-    if not line[17] in ["YES", "NO"]:  #Entry
+    if not line[17] in ["YES", "NO"]:  # Entry
         print("Value: " + line[17] + " in line 17 is invalid")
         return False
-    if not line[18] in ["Yes", ""]:  #Exit only
+    if not line[18] in ["Yes", ""]:  # Exit only
         "Value: " + line[18] + " in line 18 is invalid"
         return False
-    if not line[19] in ["YES", "NO"]:  #Vending
+    if not line[19] in ["YES", "NO"]:  # Vending
         "Value: " + line[19] + " in line 19 is invalid"
         return False
-    if not line[20] in ["FULL", "NONE", "PART", "Spc Ev"]:  #Staffing
+    if not line[20] in ["FULL", "NONE", "PART", "Spc Ev"]:  # Staffing
         "Value: " + line[20] + " in line 20 is invalid"
         return False
-    if not re.match(text_regex_n, line[21]):  #Staff Hours
+    if not re.match(text_regex_n, line[21]):  # Staff Hours
         print("Value: " + line[21] + " in line 21 is invalid")
         return False
-    if not line[22] in ["TRUE", "FALSE"]:  #ADA
+    if not line[22] in ["TRUE", "FALSE"]:  # ADA
         "Value: " + line[22] + " in line 22 is invalid"
         return False
-    if not re.match(text_regex_n, line[23]):  #ADA NOTES
+    if not re.match(text_regex_n, line[23]):  # ADA NOTES
         "Value: " + line[23] + " in line 23 is invalid"
         return False
-    if line[24] not in ["TRUE", "FALSE"]:  #Free crossover
+    if line[24] not in ["TRUE", "FALSE"]:  # Free crossover
         print("Value: " + line[24] + " in line 24 is invalid")
         return False
-    if not re.match(text_regex_n, line[25]):  #North South Street
+    if not re.match(text_regex_n, line[25]):  # North South Street
         print("Value: " + line[25] + " in line 25 is invalid")
         return False
-    if not re.match(text_regex_n, line[26]):  #East West Street
+    if not re.match(text_regex_n, line[26]):  # East West Street
         print("Value: " + line[26] + " in line 26 is invalid")
         return False
-    if not line[27] in ["NW", "NE", "SE", "SW", "W", "N", "E", "S", "West", ""]:  #Corner
+    if not line[27] in ["NW", "NE", "SE", "SW", "W", "N", "E", "S", "West", ""]:  # Corner
         print("Value: " + line[27] + " in line 27 is invalid")
         return False
-    if not re.match(float_regex, line[28]):  #Entrance Latidude
+    if not re.match(float_regex, line[28]):  # Entrance Latidude
         print("Value: " + line[28] + " in line 28 is invalid")
         return False
-    if not re.match(float_regex, line[29]):  #Entrace Longtitude
+    if not re.match(float_regex, line[29]):  # Entrace Longtitude
         print("Value: " + line[29] + " in line 29 is invalid")
         return False
-    if not re.match(coordinates_regex, line[30]):  #Station Location
+    if not re.match(coordinates_regex, line[30]):  # Station Location
         print("Value: " + line[30] + " in line 30 is invalid")
         return False
-    if not re.match(coordinates_regex, line[31]):  #Entrance Location
+    if not re.match(coordinates_regex, line[31]):  # Entrance Location
         print("Value: " + line[31] + " in line 31 is invalid")
         return False
     return True
 
 
 def check_file_lines(csv_filename):
-    #This function makes some initial checks to the file, checking at first that the header is right
-    #and then checks if each line has the right length and passes the line to check_line function to
-    #see if each value of the line matches the regex
+    # This function makes some initial checks to the file, checking at first that the header is right
+    # and then checks if each line has the right length and passes the line to check_line function to
+    # see if each value of the line matches the regex
 
     with open(csv_filename) as f:
         reader = csv.reader(f)
@@ -245,13 +245,13 @@ def check_file_lines(csv_filename):
                         'Free Crossover', 'North South Street',
                         'East West Street', 'Corner', 'Entrance Latitude', 'Entrance Longitude', 'Station Location',
                         'Entrance Location']):
-            print("Invalid file format: Header")  #Check header
+            print("Invalid file format: Header")  # Check header
             return False
-        for line in data[1:-1]:  #Exclude the header
-            if len(line) != 32:  #Check line length
+        for line in data[1:-1]:  # Exclude the header
+            if len(line) != 32:  # Check line length
                 print("Invalid file format: Line length")
                 return False
-            if not check_line(line):  #check if all the values of the line match the regex
+            if not check_line(line):  # check if all the values of the line match the regex
                 return False
         return True
 
@@ -262,7 +262,6 @@ def getUsername():
         return username
     except:
         username = ""
-
 
 
 def main():
@@ -278,20 +277,20 @@ def main():
             output_file = open('C:/Users/' + user + '/OneDrive/Desktop/subway_output.txt', 'w')
         except:
             try:
-                data_file = os.path.join(os.path.join(os.path.expanduser('~')),'Desktop/nyc_subway_stations.csv')
-                # Open the output file for writing
-                output_file = open(os.path.join(os.path.join(os.path.expanduser('~')),'Desktop/subway_output.txt'), 'w')
+              data_file = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/nyc_subway_stations.csv')
+              # Open the output file for writing
+              output_file = open(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/subway_output.txt'), 'w')
             except:
-                print("Set files: nyc_subway_station.csv and subway_output.txt on Desktop or the current working directory")
-        
+                data_file = "./nyc_subway_stations.csv"
+                output_file = open('./subway_output.txt', 'w')
 
     portals = []
     station_list = []
     route_sets_map = defaultdict(set)
 
     with open(data_file, "r") as f:
-        if not check_file_lines(data_file):  #check the file
-            exit(-1)  #if file is invalid exit with code -1
+        if not check_file_lines(data_file):  # check the file
+            exit(-1)  # if file is invalid exit with code -1
         reader = csv.DictReader(f)
         for row in reader:
             general_name, gps_coordinates = portal_names(row)
