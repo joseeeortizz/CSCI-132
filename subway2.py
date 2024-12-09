@@ -276,9 +276,13 @@ def main():
             # Open the output file for writing
             output_file = open('C:/Users/' + user + '/OneDrive/Desktop/subway_output.txt', 'w')
         except:
-            data_file = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/nyc_subway_stations.csv')
-            # Open the output file for writing
-            output_file = open(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/subway_output.txt'), 'w')
+            try:
+              data_file = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/nyc_subway_stations.csv')
+              # Open the output file for writing
+              output_file = open(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/subway_output.txt'), 'w')
+            except:
+                data_file = "./nyc_subway_stations.csv"
+                output_file = open('./subway_output.txt', 'w')
 
     portals = []
     station_list = []
