@@ -264,26 +264,39 @@ def getUsername():
         username = ""
 
 
+
 def main():
     user = getUsername()
     try:
         data_file = 'C:/Users/' + user + '/Desktop/nyc_subway_stations.csv'
+        if not os.path.exists(data_file):
+          raise("file not found")
         # Open the output file for writing
         output_file = open('C:/Users/' + user + '/Desktop/subway_output.txt', 'w')
     except:
         try:
             data_file = 'C:/Users/' + user + '/OneDrive/Desktop/nyc_subway_stations.csv'
             # Open the output file for writing
+            if not os.path.exists(data_file):
+              raise("file not found")
             output_file = open('C:/Users/' + user + '/OneDrive/Desktop/subway_output.txt', 'w')
         except:
             try:
               data_file = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/nyc_subway_stations.csv')
               # Open the output file for writing
+              if not os.path.exists(data_file):
+                raise("file not found")
               output_file = open(os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop/subway_output.txt'), 'w')
             except:
-                data_file = "./nyc_subway_stations.csv"
-                output_file = open('./subway_output.txt', 'w')
-
+                try:
+                    data_file = "./nyc_subway_stations.csv"
+                    if not os.path.exists(data_file):
+                      raise("file not found")
+                    output_file = open('./subway_output.txt', 'w')
+                except:
+                    print("Add files nyc_subway_stations.csv and subway_output.txt to Desktop or current working folder")
+                    exit()
+    
     portals = []
     station_list = []
     route_sets_map = defaultdict(set)
@@ -337,7 +350,7 @@ def main():
                          "  quit: Exit the program")
             print(help_text)
             output_file.write(help_text + "\n")
-        elif command == "quit" or command == "q":
+        elif command == "quit":
             break
         else:
             error_message = "Invalid command. Type 'help' for the list of valid commands.\n"
